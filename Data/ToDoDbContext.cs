@@ -39,6 +39,19 @@ namespace ToDoApi.Data
                 entity.HasQueryFilter(e => !e.IsDelete);
             });
 
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.HasKey(e => e.CategoryId);
+
+                entity.Property(e => e.CategoryId)
+                    .ValueGeneratedOnAdd();
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .IsRequired();
+                entity.HasIndex(e => e.Name)
+                    .IsUnique();
+            });
+
             modelBuilder.Entity<ToDo>(entity =>
             {
                 entity.HasKey(e => e.ToDoId);
@@ -63,8 +76,10 @@ namespace ToDoApi.Data
                 entity.Property(e => e.UpdatedAt)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .ValueGeneratedOnAddOrUpdate();
-                entity.Property(e => e.DueDate)
+                entity.Property(e => e.DeletedAt)
                     .IsRequired(false);
+                entity.Property(e => e.DueDate)
+                    .IsRequired();
                 entity.Property(e => e.UserId)
                     .IsRequired();
                 entity.Property(e => e.CategoryId)
