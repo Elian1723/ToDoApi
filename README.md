@@ -1,2 +1,2 @@
 # ToDo Api
-Minimal Api .NET to manage ToDos
+Minimal API .NET for ToDo management
