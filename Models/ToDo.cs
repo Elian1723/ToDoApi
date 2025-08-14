@@ -1,6 +1,6 @@
-﻿using ToDoMinimalApi.Enums;
+﻿using ToDoApi.Enums;
 
-namespace ToDoMinimalApi.Models;
+namespace ToDoApi.Models;
 
 public class ToDo
 {

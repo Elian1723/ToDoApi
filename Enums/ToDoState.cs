@@ -1,4 +1,4 @@
-﻿namespace ToDoMinimalApi.Enums;
+﻿namespace ToDoApi.Enums;
 
 public enum ToDoState
 {

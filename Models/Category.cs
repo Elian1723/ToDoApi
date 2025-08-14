@@ -1,4 +1,4 @@
-﻿namespace ToDoMinimalApi.Models;
+﻿namespace ToDoApi.Models;
 
 public class Category
 {

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ToDoMinimalApi.Enums;
-using ToDoMinimalApi.Models;
+using ToDoApi.Enums;
+using ToDoApi.Models;
 
-namespace ToDoMinimalApi.Data
+namespace ToDoApi.Data
 {
     public class ToDoDbContext : DbContext
     {
