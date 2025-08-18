@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ToDoApi.Data;
+using ToDoApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+// Configure SQLite in-memory database
 builder.Services.AddDbContext<ToDoDbContext>(options =>
 {
     var connectionString = "DataSource=:memory:";
     options.UseSqlite(connectionString);
 });
+
+// Repositories
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
 
 var app = builder.Build();
 
