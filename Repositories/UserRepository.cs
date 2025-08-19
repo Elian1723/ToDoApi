@@ -34,6 +34,4 @@ public class UserRepository : IUserRepository
     public async Task SaveChanges() => await _context.SaveChangesAsync();
 
     public async Task<User?> GetByEmail(string email) => await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-
-    public async Task<bool> UserExists(string email) => await _context.Users.AnyAsync(u => u.Email == email);
 }
