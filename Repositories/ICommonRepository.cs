@@ -2,10 +2,10 @@
 
 public interface ICommonRepository<T>
 {
-    Task<IEnumerable<T>> GetAll();
-    Task<T?> GetById(int id);
-    Task Create(T entity);
-    void Update(T entity);
-    Task Delete(int id);
-    Task SaveChanges();
+    Task<IEnumerable<T>> GetAllAsync();
+    Task<T?> GetByIdAsync(int id);
+    Task<T> CreateAsync(T entity);
+    T Update(T entity);
+    Task<bool> DeleteAsync(int id);
+    Task SaveChangesAsync();
 }

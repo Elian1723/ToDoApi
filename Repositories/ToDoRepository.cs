@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ToDoApi.Data;
 using ToDoApi.Enums;
 using ToDoApi.Models;
@@ -15,47 +14,59 @@ public class ToDoRepository : IToDoRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<ToDo>> GetAll() => await _context.ToDos.ToListAsync();
+    public async Task<IEnumerable<ToDo>> GetAllAsync() => await _context.ToDos.ToListAsync();
 
-    public async Task<ToDo?> GetById(int id) => await _context.ToDos.FindAsync(id);
+    public async Task<ToDo?> GetByIdAsync(int id) => await _context.ToDos.FindAsync(id);
 
-    public async Task Create(ToDo entity) => await _context.ToDos.AddAsync(entity);
-
-    public void Update(ToDo entity) => _context.ToDos.Update(entity);
-
-    public async Task Delete(int id)
+    public async Task<ToDo> CreateAsync(ToDo entity)
     {
-        var entity = await GetById(id) ?? throw new KeyNotFoundException($"ToDo with ID {id} not found.");
+        await _context.ToDos.AddAsync(entity);
+        return entity;
+    }
+
+    public ToDo Update(ToDo entity)
+    {
+        _context.ToDos.Update(entity);
+        return entity;
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var entity = await GetByIdAsync(id);
+
+        if (entity == null) return false;
 
         entity.State = ToDoState.Deleted;
         entity.DeletedAt = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        return true;
     }
 
-    public async Task SaveChanges() => await _context.SaveChangesAsync();
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
-    public async Task<ToDo?> GetByTitle(string title) => await _context.ToDos.FirstOrDefaultAsync(t => t.Title == title);
+    public async Task<ToDo?> GetByTitleAsync(string title) => await _context.ToDos.FirstOrDefaultAsync(t => t.Title == title);
 
-    public async Task<IEnumerable<ToDo>> GetByUserId(int userId) =>
+    public async Task<IEnumerable<ToDo>> GetByUserIdAsync(int userId) =>
         await _context.ToDos.Where(t => t.UserId == userId).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByCategoryId(int categoryId) => await _context.ToDos.Where(t => t.CategoryId == categoryId).ToListAsync();
+    public async Task<IEnumerable<ToDo>> GetByCategoryIdAsync(int categoryId) => await _context.ToDos.Where(t => t.CategoryId == categoryId).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByState(ToDoState state) => await _context.ToDos.Where(t => t.State == state).ToListAsync();
+    public async Task<IEnumerable<ToDo>> GetByStateAsync(ToDoState state) => await _context.ToDos.Where(t => t.State == state).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByPriority(ToDoPriority priority) =>
+    public async Task<IEnumerable<ToDo>> GetByPriorityAsync(ToDoPriority priority) =>
         await _context.ToDos.Where(t => t.Priority == priority).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByDueDate(DateOnly dueDate) =>
+    public async Task<IEnumerable<ToDo>> GetByDueDateAsync(DateOnly dueDate) =>
         await _context.ToDos.Where(t => t.DueDate == dueDate).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndCategoryId(int userId, int categoryId) =>
+    public async Task<IEnumerable<ToDo>> GetByUserIdAndCategoryIdAsync(int userId, int categoryId) =>
         await _context.ToDos.Where(t => t.UserId == userId && t.CategoryId == categoryId).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndState(int userId, ToDoState state) => await _context.ToDos.Where(t => t.UserId == userId && t.State == state).ToListAsync();
+    public async Task<IEnumerable<ToDo>> GetByUserIdAndStateAsync(int userId, ToDoState state) => await _context.ToDos.Where(t => t.UserId == userId && t.State == state).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndPriority(int userId, ToDoPriority priority) =>
+    public async Task<IEnumerable<ToDo>> GetByUserIdAndPriorityAsync(int userId, ToDoPriority priority) =>
         await _context.ToDos.Where(t => t.UserId == userId && t.Priority == priority).ToListAsync();
 
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndDueDate(int userId, DateOnly dueDate) =>
+    public async Task<IEnumerable<ToDo>> GetByUserIdAndDueDateAsync(int userId, DateOnly dueDate) =>
         await _context.ToDos.Where(t => t.UserId == userId && t.DueDate == dueDate).ToListAsync();
 }

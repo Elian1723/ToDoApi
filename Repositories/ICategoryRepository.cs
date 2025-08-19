@@ -4,7 +4,7 @@ namespace ToDoApi.Repositories;
 
 public interface ICategoryRepository : ICommonRepository<Category>
 {
-    Task<Category?> GetByName(string name);
-    Task<int> GetUsageCount(int categoryId);
-    Task<int> GetUsageCountByUser(int categoryId, int userId);
+    Task<Category?> GetByNameAsync(string name);
+    Task<int> GetUsageCountAsync(int categoryId);
+    Task<int> GetUsageCountByUserAsync(int categoryId, int userId);
 }
