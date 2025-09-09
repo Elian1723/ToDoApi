@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using ToDoApi.Automappers;
+using ToDoApi.Mapping;
 using ToDoApi.Data;
 using ToDoApi.Repositories;
 

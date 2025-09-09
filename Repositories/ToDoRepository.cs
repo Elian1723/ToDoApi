@@ -30,16 +30,12 @@ public class ToDoRepository : IToDoRepository
         return entity;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        var entity = await GetByIdAsync(id);
-
-        if (entity == null) return false;
+        var entity = await GetByIdAsync(id) ?? throw new KeyNotFoundException($"ToDo {id} not found");
 
         entity.State = ToDoState.Deleted;
         entity.DeletedAt = DateOnly.FromDateTime(DateTime.UtcNow);
-
-        return true;
     }
 
     public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

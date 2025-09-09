@@ -6,6 +6,6 @@ public interface ICommonRepository<T>
     Task<T?> GetByIdAsync(int id);
     Task<T> CreateAsync(T entity);
     T Update(T entity);
-    Task<bool> DeleteAsync(int id);
+    Task DeleteAsync(int id);
     Task SaveChangesAsync();
 }

@@ -26,18 +26,14 @@ public class CategoryRepository : ICategoryRepository
     public Category Update(Category entity)
     {
         _context.Categories.Update(entity);
+        
         return entity;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        var category = await GetByIdAsync(id);
-
-        if (category == null) return false;
-
+        var category = await GetByIdAsync(id) ?? throw new KeyNotFoundException($"Category {id} not found");
         _context.Categories.Remove(category);
-
-        return true;
     }
 
     public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

@@ -30,18 +30,14 @@ public class UserRepository : IUserRepository
         return entity;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        var user = await GetByIdAsync(id);
-
-        if (user == null) return false;
+        var user = await GetByIdAsync(id) ?? throw new KeyNotFoundException($"Category {id} not found");
 
         user.IsDelete = true;
         user.DeletedAt = DateOnly.FromDateTime(DateTime.UtcNow);
 
         _context.ToDos.Where(todo => todo.UserId == id).ToList().ForEach(todo => todo.State = ToDoState.Deleted);
-
-        return true;
     }
     public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
