@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using ToDoApi.Enums;
 
-namespace ToDoApi.DTOs;
+namespace ToDoApi.Models.DTOs;
 
 public class ToDoDto
 {

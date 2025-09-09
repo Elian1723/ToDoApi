@@ -1,6 +1,6 @@
-﻿namespace ToDoApi.DTOs;
+﻿namespace ToDoApi.Models.DTOs;
 
-public class UserCreateDto
+public class UserUpdateDto
 {
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;

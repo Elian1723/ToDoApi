@@ -1,4 +1,4 @@
-﻿namespace ToDoApi.DTOs;
+﻿namespace ToDoApi.Models.DTOs;
 
 public class CategoryDto
 {
