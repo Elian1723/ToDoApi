@@ -42,9 +42,6 @@ public class ToDoRepository : IToDoRepository
 
     public async Task<ToDo?> GetByTitleAsync(string title) => await _context.ToDos.FirstOrDefaultAsync(t => t.Title == title);
 
-    public async Task<IEnumerable<ToDo>> GetByUserIdAsync(int userId) =>
-        await _context.ToDos.Where(t => t.UserId == userId).ToListAsync();
-
     public async Task<IEnumerable<ToDo>> GetByCategoryIdAsync(int categoryId) => await _context.ToDos.Where(t => t.CategoryId == categoryId).ToListAsync();
 
     public async Task<IEnumerable<ToDo>> GetByStateAsync(ToDoState state) => await _context.ToDos.Where(t => t.State == state).ToListAsync();
@@ -54,15 +51,4 @@ public class ToDoRepository : IToDoRepository
 
     public async Task<IEnumerable<ToDo>> GetByDueDateAsync(DateOnly dueDate) =>
         await _context.ToDos.Where(t => t.DueDate == dueDate).ToListAsync();
-
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndCategoryIdAsync(int userId, int categoryId) =>
-        await _context.ToDos.Where(t => t.UserId == userId && t.CategoryId == categoryId).ToListAsync();
-
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndStateAsync(int userId, ToDoState state) => await _context.ToDos.Where(t => t.UserId == userId && t.State == state).ToListAsync();
-
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndPriorityAsync(int userId, ToDoPriority priority) =>
-        await _context.ToDos.Where(t => t.UserId == userId && t.Priority == priority).ToListAsync();
-
-    public async Task<IEnumerable<ToDo>> GetByUserIdAndDueDateAsync(int userId, DateOnly dueDate) =>
-        await _context.ToDos.Where(t => t.UserId == userId && t.DueDate == dueDate).ToListAsync();
 }

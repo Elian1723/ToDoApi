@@ -41,7 +41,4 @@ public class CategoryRepository : ICategoryRepository
     public async Task<Category?> GetByNameAsync(string name) => await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);
 
     public async Task<int> GetUsageCountAsync(int categoryId) => await _context.ToDos.CountAsync(t => t.CategoryId == categoryId);
-
-    public async Task<int> GetUsageCountByUserAsync(int categoryId, int userId) =>
-        await _context.ToDos.CountAsync(t => t.CategoryId == categoryId && t.UserId == userId);
 }

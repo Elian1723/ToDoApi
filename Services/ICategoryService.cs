@@ -6,6 +6,5 @@ public interface ICategoryService : ICommonService<CategoryDto, CategoryCreateDt
 {
     Task<CategoryDto?> GetByNameAsync(string name);
     Task<int> GetUsageCountAsync(int categoryId);
-    Task<int> GetUsageCountByUserAsync(int categoryId, int userId);
     Task<bool> ExistsAsync(string name);
 }

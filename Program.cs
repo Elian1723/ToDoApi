@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ToDoApi.Mapping;
 using ToDoApi.Data;
 using ToDoApi.Repositories;
+using ToDoApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-
 // Configure SQLite in-memory database
 builder.Services.AddDbContext<ToDoDbContext>(options =>
 {
@@ -27,8 +27,12 @@ builder.Services.AddDbContext<ToDoDbContext>(options =>
 
 // Repositories
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
+
+// Services
+builder.Services.AddScoped<IToDoService, ToDoService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
 // Mappers
 builder.Services.AddAutoMapper(typeof(MappingProfile));

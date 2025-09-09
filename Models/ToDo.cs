@@ -13,8 +13,6 @@ public class ToDo
     public DateOnly UpdatedAt { get; set; }
     public DateOnly? DeletedAt { get; set; }
     public DateOnly DueDate { get; set; }
-    public int UserId { get; set; }
     public int? CategoryId { get; set; }
     public virtual Category? Category { get; set; }
-    public virtual User User { get; set; } = null!;
 }

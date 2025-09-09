@@ -15,8 +15,6 @@ public class ToDoDto
     public DateOnly CreatedAt { get; set; }
     public DateOnly UpdatedAt { get; set; }
     public DateOnly DueDate { get; set; }
-    public int UserId { get; set; }
     public int? CategoryId { get; set; }
-    public string UserName { get; set; } = null!;
     public string CategoryName { get; set; } = null!;
 }

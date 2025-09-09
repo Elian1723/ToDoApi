@@ -87,41 +87,6 @@ public class ToDoService : IToDoService
         return toDo is null ? null : _mapper.Map<ToDoDto?>(toDo);
     }
 
-    public async Task<IEnumerable<ToDoDto>> GetByUserIdAndCategoryIdAsync(int userId, int categoryId)
-    {
-        var toDos = await _todoRepository.GetByUserIdAndCategoryIdAsync(userId, categoryId);
-
-        return _mapper.Map<IEnumerable<ToDoDto>>(toDos ?? []);
-    }
-
-    public async Task<IEnumerable<ToDoDto>> GetByUserIdAndDueDateAsync(int userId, DateOnly dueDate)
-    {
-        var toDos = await _todoRepository.GetByUserIdAndDueDateAsync(userId, dueDate);
-
-        return _mapper.Map<IEnumerable<ToDoDto>>(toDos ?? []);
-    }
-
-    public async Task<IEnumerable<ToDoDto>> GetByUserIdAndPriorityAsync(int userId, ToDoPriority priority)
-    {
-        var toDos = await _todoRepository.GetByUserIdAndPriorityAsync(userId, priority);
-
-        return _mapper.Map<IEnumerable<ToDoDto>>(toDos ?? []);
-    }
-
-    public async Task<IEnumerable<ToDoDto>> GetByUserIdAndStateAsync(int userId, ToDoState state)
-    {
-        var toDos = await _todoRepository.GetByUserIdAndStateAsync(userId, state);
-
-        return _mapper.Map<IEnumerable<ToDoDto>>(toDos ?? []);
-    }
-
-    public async Task<IEnumerable<ToDoDto>> GetByUserIdAsync(int userId)
-    {
-        var toDos = await _todoRepository.GetByUserIdAsync(userId);
-
-        return _mapper.Map<IEnumerable<ToDoDto>>(toDos ?? []);
-    }
-
     public async Task UpdateAsync(ToDoUpdateDto entity, int id)
     {
         if (_todoRepository.GetByIdAsync(id).Result is null)

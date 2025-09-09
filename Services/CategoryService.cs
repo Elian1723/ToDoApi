@@ -81,13 +81,6 @@ public class CategoryService : ICategoryService
         return usageCount;
     }
 
-    public Task<int> GetUsageCountByUserAsync(int categoryId, int userId)
-    {
-        var usageCount = _categoryRepository.GetUsageCountByUserAsync(categoryId, userId);
-
-        return usageCount;
-    }
-
     public async Task UpdateAsync(CategoryUpdateDto entity, int id)
     {
         if (await _categoryRepository.GetByIdAsync(id) is null)
