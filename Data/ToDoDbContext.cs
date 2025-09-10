@@ -18,7 +18,7 @@ namespace ToDoApi.Data
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategoryId);
-
+                
                 entity.Property(e => e.CategoryId)
                     .ValueGeneratedOnAdd();
                 entity.Property(e => e.Name)
