@@ -81,7 +81,7 @@ public class CategoryService : ICategoryService
         return usageCount;
     }
 
-    public async Task UpdateAsync(CategoryUpdateDto entity, int id)
+    public async Task<CategoryDto> UpdateAsync(CategoryUpdateDto entity, int id)
     {
         if (await _categoryRepository.GetByIdAsync(id) is null)
         {
@@ -90,7 +90,9 @@ public class CategoryService : ICategoryService
 
         var category = _mapper.Map<Category>(entity);
 
-        _categoryRepository.Update(category);
+        var updatedCategory = _categoryRepository.Update(category);
         await _categoryRepository.SaveChangesAsync();
+
+        return _mapper.Map<CategoryDto>(updatedCategory);
     }
 }

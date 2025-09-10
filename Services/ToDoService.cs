@@ -87,7 +87,7 @@ public class ToDoService : IToDoService
         return toDo is null ? null : _mapper.Map<ToDoDto?>(toDo);
     }
 
-    public async Task UpdateAsync(ToDoUpdateDto entity, int id)
+    public async Task<ToDoDto> UpdateAsync(ToDoUpdateDto entity, int id)
     {
         if (_todoRepository.GetByIdAsync(id).Result is null)
         {
@@ -96,7 +96,9 @@ public class ToDoService : IToDoService
 
         var toDo = _mapper.Map<ToDo>(entity);
 
-        _todoRepository.Update(toDo);
+        var updatedToDo = _todoRepository.Update(toDo);
         await _todoRepository.SaveChangesAsync();
+        
+        return _mapper.Map<ToDoDto>(updatedToDo);
     }
 }
