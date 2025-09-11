@@ -16,5 +16,4 @@ public class ToDoDto
     public DateOnly UpdatedAt { get; set; }
     public DateOnly DueDate { get; set; }
     public int? CategoryId { get; set; }
-    public string CategoryName { get; set; } = null!;
 }

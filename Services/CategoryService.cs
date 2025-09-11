@@ -31,15 +31,14 @@ public class CategoryService : ICategoryService
         return _mapper.Map<CategoryDto>(categoryCreated);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        if (_categoryRepository.GetByIdAsync(id).Result is null)
-        {
-            throw new KeyNotFoundException("Category not found.");
-        }
+        if (await ExistsAsync(id) == false) return false;
 
         await _categoryRepository.DeleteAsync(id);
         await _categoryRepository.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task<bool> ExistsAsync(int categoryId) => await _categoryRepository.ExistsAsync(categoryId);
@@ -77,12 +76,9 @@ public class CategoryService : ICategoryService
         return usageCount;
     }
 
-    public async Task<CategoryDto> UpdateAsync(CategoryUpdateDto entity, int id)
+    public async Task<CategoryDto?> UpdateAsync(CategoryUpdateDto entity, int id)
     {
-        if (await ExistsAsync(id) == false)
-        {
-            throw new KeyNotFoundException($"Category with ID {id} not found.");
-        }
+        if (await ExistsAsync(id) == false) return null;
 
         var category = _mapper.Map<Category>(entity);
         category.CategoryId = id;

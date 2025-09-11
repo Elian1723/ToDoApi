@@ -48,16 +48,30 @@ namespace ToDoApi.Data
                     .IsRequired();
                 entity.Property(e => e.CreatedAt)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd()
+                    .HasConversion(
+                        dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue),
+                        dateTime => DateOnly.FromDateTime(dateTime));
                 entity.Property(e => e.UpdatedAt)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                    .ValueGeneratedOnAddOrUpdate();
+                    .ValueGeneratedOnAddOrUpdate()
+                    .HasConversion(
+                        dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue),
+                        dateTime => DateOnly.FromDateTime(dateTime));
                 entity.Property(e => e.DeletedAt)
-                    .IsRequired(false);
+                    .IsRequired(false)
+                    .HasConversion(
+                        dateOnly => dateOnly.HasValue ? dateOnly.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
+                        dateTime => dateTime.HasValue ? DateOnly.FromDateTime(dateTime.Value) : null);
                 entity.Property(e => e.DueDate)
-                    .IsRequired();
+                    .IsRequired()
+                    .HasConversion(
+                        dateOnly => dateOnly.ToDateTime(TimeOnly.MinValue),
+                        dateTime => DateOnly.FromDateTime(dateTime));
                 entity.Property(e => e.CategoryId)
                     .IsRequired(false);
+
+                entity.HasQueryFilter(e => e.State != ToDoState.Deleted);
 
                 entity.HasOne(e => e.Category).WithMany(c => c.ToDos).OnDelete(DeleteBehavior.SetNull);
             });

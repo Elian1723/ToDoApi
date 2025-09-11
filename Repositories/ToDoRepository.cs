@@ -38,6 +38,8 @@ public class ToDoRepository : IToDoRepository
         entity.DeletedAt = DateOnly.FromDateTime(DateTime.UtcNow);
     }
 
+    public async Task<bool> ExistsAsync(int id) => await _context.ToDos.AnyAsync(t => t.ToDoId == id);
+
     public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
     public async Task<ToDo?> GetByTitleAsync(string title) => await _context.ToDos.FirstOrDefaultAsync(t => t.Title == title);

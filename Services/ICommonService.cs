@@ -5,6 +5,7 @@ public interface ICommonService<TGet, TCreate, TUpdate> where TGet : class where
     Task<IEnumerable<TGet>> GetAllAsync();
     Task<TGet?> GetByIdAsync(int id);
     Task<TGet> CreateAsync(TCreate entity);
-    Task<TGet> UpdateAsync(TUpdate entity, int id);
-    Task DeleteAsync(int id);
+    Task<TGet?> UpdateAsync(TUpdate entity, int id);
+    Task<bool> DeleteAsync(int id);
+    Task<bool> ExistsAsync(int id);
 }

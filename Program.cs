@@ -73,11 +73,11 @@ app.MapGet("/categories/{id}", async (ICategoryService service, int id) =>
 {
     try
     {
-        var categorie = await service.GetByIdAsync(id);
+        var category = await service.GetByIdAsync(id);
 
-        if (categorie is null) return Results.NotFound();
+        if (category is null) return Results.NotFound();
 
-        return Results.Ok(categorie);
+        return Results.Ok(category);
     }
     catch (Exception ex)
     {
@@ -117,14 +117,86 @@ app.MapDelete("/categories/{id}", async (ICategoryService service, int id) =>
 {
     try
     {
-        await service.DeleteAsync(id);
+        bool deleted = await service.DeleteAsync(id);
 
-        return Results.NoContent();
+        return deleted ? Results.NoContent() : Results.NotFound();
     }
     catch (Exception ex)
     {
         return Results.BadRequest(ex.Message);
     }
 }).WithName("DeleteCategory").WithOpenApi();
+
+app.MapGet("/todos", async (IToDoService service) =>
+{
+    try
+    {
+        var todos = await service.GetAllAsync();
+
+        return Results.Ok(todos);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("GetAllToDos").WithOpenApi();
+
+app.MapGet("/todos/{id}", async (IToDoService service, int id) =>
+{
+    try
+    {
+        var todo = await service.GetByIdAsync(id);
+
+        if (todo is null) return Results.NotFound();
+
+        return Results.Ok(todo);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("GetToDoById").WithOpenApi();
+
+app.MapPost("/todos", async (IToDoService service, ToDoCreateDto dto) =>
+{
+    try
+    {
+        var createdToDo = await service.CreateAsync(dto);
+
+        return Results.Created($"/todos/{createdToDo.ToDoId}", createdToDo);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("CreateToDo").WithOpenApi();
+
+app.MapPut("/todos/{id}", async (IToDoService service, int id, ToDoUpdateDto dto) =>
+{
+    try
+    {
+        var updatedTodo = await service.UpdateAsync(dto, id);
+
+        return updatedTodo is null ? Results.NotFound() : Results.Ok(updatedTodo);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("UpdateToDo").WithOpenApi();
+
+app.MapDelete("/todos/{id}", async (IToDoService service, int id) =>
+{
+    try
+    {
+        bool deleted = await service.DeleteAsync(id);
+
+        return deleted ? Results.NoContent() : Results.NotFound();
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("DeleteToDo").WithOpenApi();
 
 app.Run();

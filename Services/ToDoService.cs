@@ -27,16 +27,17 @@ public class ToDoService : IToDoService
         return _mapper.Map<ToDoDto>(toDo);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        if (_todoRepository.GetByIdAsync(id).Result is null)
-        {
-            throw new KeyNotFoundException($"ToDo with ID {id} not found.");
-        }
+        if (await ExistsAsync(id) == false) return false;
 
         await _todoRepository.DeleteAsync(id);
         await _todoRepository.SaveChangesAsync();
+
+        return true;
     }
+
+    public async Task<bool> ExistsAsync(int id) => await _todoRepository.ExistsAsync(id);
 
     public async Task<IEnumerable<ToDoDto>> GetAllAsync()
     {
@@ -87,11 +88,13 @@ public class ToDoService : IToDoService
         return toDo is null ? null : _mapper.Map<ToDoDto?>(toDo);
     }
 
-    public async Task<ToDoDto> UpdateAsync(ToDoUpdateDto entity, int id)
+    public async Task<ToDoDto?> UpdateAsync(ToDoUpdateDto entity, int id)
     {
-        if (_todoRepository.GetByIdAsync(id).Result is null)
+        if (await ExistsAsync(id) == false) return null;
+
+        if (entity.State == ToDoState.Deleted)
         {
-            throw new KeyNotFoundException($"ToDo with ID {id} not found.");
+            throw new ArgumentException("ToDo state cannot be set to Deleted. Use the Delete endpoint instead.");
         }
 
         var toDo = _mapper.Map<ToDo>(entity);
