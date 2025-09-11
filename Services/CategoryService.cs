@@ -42,16 +42,12 @@ public class CategoryService : ICategoryService
         await _categoryRepository.SaveChangesAsync();
     }
 
-    public async Task<bool> ExistsAsync(string name)
-    {
-        var category = await _categoryRepository.GetByNameAsync(name);
-        
-        return category is not null;
-    }
+    public async Task<bool> ExistsAsync(int categoryId) => await _categoryRepository.ExistsAsync(categoryId);
 
     public async Task<IEnumerable<CategoryDto>> GetAllAsync()
     {
         var categories = await _categoryRepository.GetAllAsync();
+        
 
         return _mapper.Map<IEnumerable<CategoryDto>>(categories ?? []);
     }
@@ -83,12 +79,13 @@ public class CategoryService : ICategoryService
 
     public async Task<CategoryDto> UpdateAsync(CategoryUpdateDto entity, int id)
     {
-        if (await _categoryRepository.GetByIdAsync(id) is null)
+        if (await ExistsAsync(id) == false)
         {
             throw new KeyNotFoundException($"Category with ID {id} not found.");
         }
 
         var category = _mapper.Map<Category>(entity);
+        category.CategoryId = id;
 
         var updatedCategory = _categoryRepository.Update(category);
         await _categoryRepository.SaveChangesAsync();

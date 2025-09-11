@@ -22,7 +22,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 // Configure SQLite in-memory database
 builder.Services.AddDbContext<ToDoDbContext>(options =>
 {
-    var connectionString = "DataSource=Data/todoapi.db";
+    var connectionString = "DataSource=todoapi.db";
     options.UseSqlite(connectionString);
 });
 
@@ -54,5 +54,77 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapGet("/categories", async (ICategoryService service) =>
+{
+    try
+    {
+        var categories = await service.GetAllAsync();
+
+        return Results.Ok(categories);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("GetAllCategories").WithOpenApi();
+
+app.MapGet("/categories/{id}", async (ICategoryService service, int id) =>
+{
+    try
+    {
+        var categorie = await service.GetByIdAsync(id);
+
+        if (categorie is null) return Results.NotFound();
+
+        return Results.Ok(categorie);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("GetCategoryById").WithOpenApi();
+
+app.MapPost("/categories", async (ICategoryService service, CategoryCreateDto categoryDto) =>
+{
+    try
+    {
+        var createdCategory = await service.CreateAsync(categoryDto);
+
+        return Results.Created($"/categories/{createdCategory.CategoryId}", createdCategory);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("CreateCategory").WithOpenApi();
+
+app.MapPut("/categories/{id}", async (ICategoryService service, int id, CategoryUpdateDto categoryDto) =>
+{
+    try
+    {
+        var updatedCategory = await service.UpdateAsync(categoryDto, id);
+
+        return updatedCategory is null ? Results.NotFound() : Results.Ok(updatedCategory);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("UpdateCategory").WithOpenApi();
+
+app.MapDelete("/categories/{id}", async (ICategoryService service, int id) =>
+{
+    try
+    {
+        await service.DeleteAsync(id);
+
+        return Results.NoContent();
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithName("DeleteCategory").WithOpenApi();
 
 app.Run();

@@ -36,6 +36,8 @@ public class CategoryRepository : ICategoryRepository
         _context.Categories.Remove(category);
     }
 
+    public async Task<bool> ExistsAsync(int categoryId) => await _context.Categories.AnyAsync(c => c.CategoryId == categoryId);
+
     public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
     public async Task<Category?> GetByNameAsync(string name) => await _context.Categories.FirstOrDefaultAsync(c => c.Name == name);

@@ -95,6 +95,7 @@ public class ToDoService : IToDoService
         }
 
         var toDo = _mapper.Map<ToDo>(entity);
+        toDo.ToDoId = id;
 
         var updatedToDo = _todoRepository.Update(toDo);
         await _todoRepository.SaveChangesAsync();

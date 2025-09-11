@@ -6,4 +6,5 @@ public interface ICategoryRepository : ICommonRepository<Category>
 {
     Task<Category?> GetByNameAsync(string name);
     Task<int> GetUsageCountAsync(int categoryId);
+    Task<bool> ExistsAsync(int categoryId);
 }
